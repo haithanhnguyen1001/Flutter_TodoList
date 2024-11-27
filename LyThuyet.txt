@@ -1,0 +1,508 @@
+1. In bien/object
+print()
+
+2. Type
+String name = "Van duy";
+int age = 1;
+bool check = true;
+double sum = 8.5;
+dynamic age1 = 15; //All type, init la null, type sẽ thay đổi tự động dựa vào giá trị gán
+var varAll; // All type, init null, type chỉ chấp nhận thay đổi 1 lần vào lần gán đầu tiên (kiểu nào cũng được nếu gán lần đầu tiên)
+
+3. List & Map
+List<String> name = ['Duy', 'Hai', 'Phi']; //Array
+print(name);
+print(name[1]);
+
+Map<String, String> obj = {"username": "vanduy", "password": "123456"}; // object
+print(obj);
+print(obj['username']);
+
+4. const & final
+const TIME = 1; //Phải khởi tạo giá trị cho biến const, không thể thay đổi giá trị khi đã được gán
+print(TIME);
+
+final AGE; //Không bắt buộc phải khởi taọ giá trị, gán sau cũng được, không thể thay đổi giá trị khi đã được gán
+AGE = 5;
+
+5. Toán tử
+print(c & d);   //and
+print(c | d);   //or
+print(a == 6);  //equal
+print(a != 6);  //not equal
+print(!c);      //nguoc lai
+
+6. Hàm
+* Loại 1: Hàm void
+void showHello() {
+  print("Hello World");
+}
+
+* Loại 2: truyền biến
+void showHello(int a, int b) {
+  print(a + b);
+}
+
+* Loại 3: giá trị mặc định cho biến (Có truyền vào thì chạy bth còn không truyền thì sẽ ăn giá trị mặc định)
+void showHello([int a = 1, int b = 2]) {
+  print(a + b);
+}
+
+7. class
+* Khai báo
+class Book {
+  String name; //Tí nữa tôi sẽ truyền, đừng bắt phải khởi tạo giá trị
+  int year;
+
+  Book({required this.name, this.year = 2003}); //Bắt buộc phải truyền name, year mặc định là 2003
+}
+
+* Tạo đối tượng
+
+Book MyBook = Book(name: "Bao moi");
+
+
+
+Scafford() -> nền màu trắng
+SafeArea() -> tạo 1 khoảng trống ở trên và ở dưới, để content không bị đè mất
+Center() -> nằm giữa
+
+debugShowCheckedModeBanner: false -> mất nhãn debug màu đỏ (thuộc tính của MaterialApp)
+
+//Phan tren cung cua application (thuộc tính của Scaffold)
+appBar: AppBar(
+          backgroundColor: Colors.red,
+          title: Text("My App"),
+),
+
+
+
+
+//Stateless vs Stateful
+
+Stateless widget: 
+
+cu phap:
+class MyWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(...)
+  }
+}
+
+vd1:
+class MyWidget extends StatelessWidget {
+  final bool loading;
+
+  const MyWidget(this.loading, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    if (loading) {
+      return const CircularProgressIndicator();
+    } else {
+      return const Text("State");
+    }
+  }
+}
+
+
+vd2: Toan tu 3 ngoi
+class MyWidget extends StatelessWidget {
+  final bool loading;
+
+  const MyWidget(this.loading, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return loading ? const CircularProgressIndicator() : const Text("State");
+  }
+}
+
+
+vd3: Ung dung bien va tu customize 1 widget
+
+void main() {
+  // Buoc 3: Ham runApp()
+  //        + khoi dong app
+  runApp(const MaterialApp(
+    // Buoc 4: Su dung thanh phan de xay dung giao dien nguoi dung
+    home: SafeArea(
+      child: Scaffold(
+        body: Center(child: MyWidget(true)),
+      ),
+    ),
+    debugShowCheckedModeBanner: false,
+  ));
+}
+
+class MyWidget extends StatelessWidget {
+  final bool loading;
+
+  const MyWidget(this.loading, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return loading ? const CircularProgressIndicator() : const Text("State");
+  }
+}
+
+
+
+
+Stateful Widget
+
+
+1. Cu phap
+class MyWidget2 extends StatefulWidget {
+  final bool loading;
+
+  const MyWidget2(this.loading);
+
+  @override
+  State<StatefulWidget> createState() {
+    return MyWidget2State();
+  }
+}
+
+class MyWidget2State extends State<MyWidget2> {
+  @override
+  Widget build(BuildContext context) {
+    return widget.loading
+        ? const CircularProgressIndicator()
+        : const Text("StatefulWidget");
+  }
+}
+
+2. Vi du ap dung
+
+class MyWidget2State extends State<MyWidget2> {
+  late bool _localLoading;
+
+  @override
+  void initState() {
+    super.initState();
+    _localLoading = widget.loading;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _localLoading
+        ? const CircularProgressIndicator()
+        : FloatingActionButton(onPressed: onClickButton);
+  }
+
+  void onClickButton() {
+    setState(() {
+      _localLoading = true;
+    });
+  }
+}
+
+
+so sanh stateless va Stateful
++ deu co ham build => xay dung giao dien
+
+
+stateless
++ chi co 1 buoc la override ham build
+
+Stateful
++ override createState()
++ tao ra 1 classState va extends State<class> do
++ user tuong tac se lam thay doi giao dien
+
+
+
+
+Text
+textDirection: TextDirection.rtl -> Huong text tu trai sang phai/phai sang trai
+textAlign: TextAlign.center -> Can trai phai giua
+maxLines: n -> Chỉ hiển thị trên n dòng, phần thừa ra thì ẩn đi
+overflow: TextOverflow.ellipsis -> Xử lí phần chữ bị thừa ra
+textScaleFactor: 1.5 -> Scale x1.5
+
+TextStyle
+color: Colors.pink
+backgroundColor: Colors.green,
+fontSize: 13,
+fontStyle: FontStyle.italic,
+fontWeight: FontWeight.w300,
+wordSpacing: 30 -> Khoảng cách giữa các từ
+letterSpacing: 30 -> Khoảng cách giữa các chữ cái
+decoration: TextDecoration.underline
+
+
+RichText: Hiển thị các từ trong câu với style khác nhau
+
+ return RichText(
+      text: TextSpan(
+          style: DefaultTextStyle.of(context).style,
+          children: const <TextSpan>[
+            TextSpan(text: "Hello "),
+            TextSpan(
+              text: 'bold',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: " world!!!")
+          ]),
+    );
+
+
+Card: Ung dung lam cac the label
+return const Card(
+      color: Colors.white,
+      child: Text(
+        "TinCoder!",
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 20,
+        ),
+      ),
+);
+
+
+Padding: là 1 widget (tạo bằng bóng đèn)
+EdgeInsets.all(8.0) -> 4 Huong
+EdgeInsets.fromLTRB(left, top, right, bottom)
+EdgeInsets.only(left: 40.0)
+EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0) -> doc/ngang
+
+Margin: là 1 thuộc tính
+Tương tự như padding
+
+
+TextButton: Giống như thẻ <a>
+style: TextButton.styleFrom(
+        foregroundColor: Colors.white, //màu chữ
+        backgroundColor: Colors.green, //màu nền
+),
+
+onPressed: () => {
+        print("click text button"),
+},
+
+padding: như bình thường
+margin: cần phải bọc bên trong 1 container
+
+Nếu muốn dùng icon thì sử dụng cú pháp TextButton.icon, đổi child thành label và thêm 1 thuộc tính icon (con thứ nhất)
+
+return Container(
+      margin: EdgeInsets.all(20.0),
+      child: TextButton.icon(
+        onPressed: () => {
+          print("click text button"),
+        },
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.green,
+          // minimumSize: const Size(200, 80),
+          padding: const EdgeInsets.all(20.0),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(1)),
+          elevation: 8, //Độ rộng của bóng
+          shadowColor: Colors.blue.withOpacity(0.5),
+          side: const BorderSide(
+            //viền của button
+            width: 2,
+            color: Colors.blue,
+          ),
+        ),
+        label: const Text(
+          "Text Button",
+          style: TextStyle(fontSize: 28),
+        ),
+        icon: const Icon(
+          Icons.add,
+          size: 30,
+        ),
+      ),
+    );
+
+
+ElevatedButton: Tuong tu TextButton
+
+return Container(
+      margin: const EdgeInsets.all(20.0),
+      child: ElevatedButton.icon(
+        onPressed: () {
+          print("Clicked");
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green, //Mau nen
+          foregroundColor: Colors.white, //Mau chu
+          minimumSize: const Size(240, 80), //Fix kich thuoc
+          padding: const EdgeInsets.all(20.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(40), //Bo goc
+          ),
+          shadowColor: Colors.black.withOpacity(0.5),
+          elevation: 10,
+          side: const BorderSide(
+            width: 2,
+            color: Colors.black,
+          ),
+        ),
+        label: const Text(
+          "Elevated Button",
+          style: TextStyle(
+            fontSize: 28,
+          ),
+        ),
+        icon: Icon(
+          Icons.add,
+          size: 30,
+        ),
+      ),
+    );
+
+
+Container
+* khi không có child thì khi set color thì nó sẽ tràn full màn hình
+* khi có child thì nó chỉ wrap mỗi content thôi
+
+/color
+//khi khong/co child
+//size: width & height
+//alignment:
+//padding & margin
+//decoration
+class MyWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 200, //chieu rong
+      height: 200, //chieu cao
+      alignment: Alignment.center, //can content ben trong tam la 0.0 va 0.0
+      padding: const EdgeInsets.all(20.0),
+      margin: const EdgeInsets.all(20.0),
+      decoration: BoxDecoration(
+        color: Colors.blue, //mau nen
+        shape: BoxShape.rectangle, //Hinh dang
+        borderRadius: const BorderRadius.all(Radius.circular(20.0)), //bo goc
+        border: Border.all(width: 2, color: Colors.red), //vien
+      ),
+      child: const Text(
+        "Tin coder",
+        style: TextStyle(
+          fontSize: 30,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+}
+
+
+SizedBox: Giong container nhung don gian hon
+set height de cach cac phan tu
+
+
+Row
+children[]
+mainAxisSize: MainAxisSize.min/max, //chieu dai chi bao quanh content/toan bo chieu ngang
+mainAxisAlignment: MainAxisAlignment.spaceBetween //giong justify-content (vi chieu ngang la chieu chinh)
+crossAxisAlignment: CrossAxisAlignment.center //giong align-items
+
+
+Column
+children[]
+mainAxisSize: MainAxisSize.min/max, //chieu dai chi bao quanh content/toan bo chieu doc
+mainAxisAlignment: MainAxisAlignment.spaceBetween //giong align-items (vi chieu doc la chieu chinh)
+crossAxisAlignment: CrossAxisAlignment.center //giong justify-content
+
+
+Expanded: Ứng dụng để chia tỷ lệ (2 thẻ expand trong row thì sẽ chiếm 50/50 chiều ngang)
+* Có thể chèn SizedBox vào để tạo margin tự động
+* Tính chất là lấp đầy khoảng trống có sẵn
+
+return Container(
+      margin: EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(
+              color: Colors.green,
+              height: 150,
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Expanded(
+            flex: 6, //chia tỷ lệ
+            child: Container(
+              color: Colors.lightBlueAccent,
+              height: 150,
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Expanded(
+            flex: 1, //chia tỷ lệ
+            child: Container(
+              color: Colors.red,
+              height: 150,
+            ),
+          ),
+        ],
+      ),
+    );
+
+
+
+Stack: Sắp xếp bố cục chồng lên nhau
+* Cái sau định nghĩa sẽ đè lên cái trước nó
+
+return Container(
+      color: Colors.grey,
+      width: 500,
+      height: 500,
+      child: Stack(
+        fit: StackFit.loose, //Kéo dãn
+        alignment: Alignment.center, //Căn chỉnh góc bắt đầu xếp chồng
+        clipBehavior: Clip.none, //Hiển thị phần tràn ra ngoài
+        children: [
+          Container(
+            color: Colors.blue,
+            height: 300,
+            width: 300,
+          ),
+          Positioned(
+            // Set vị trí của 1 widget bên trong stack (Cách này OK!!!!!)
+            left: 10,
+            bottom: 10,
+            child: Container(
+              color: Colors.green,
+              height: 200,
+              width: 200,
+            ),
+          ),
+          Align(
+            //Sử dụng thuộc tính này để căn chỉnh nó với thg cha gần nhất
+            alignment: Alignment.bottomRight, //Sử dụng kết hợp với Align
+            child: Container(
+              color: Colors.pink,
+              height: 100,
+              width: 100,
+            ),
+          ),
+          Container(
+            color: Colors.yellow,
+            height: 70,
+            width: 70,
+          ),
+          Container(
+            color: Colors.red,
+            height: 50,
+            width: 50,
+          ),
+        ],
+      ),
+    );
+
+
+Sự khác biệt giữa Expanded và Flexible
+Flexible tương tự như Expanded
+
